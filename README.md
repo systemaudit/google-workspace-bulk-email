@@ -25,26 +25,90 @@ Automated bulk email account creation tool for Google Workspace (formerly G Suit
 
 ## 🛠️ Installation
 
-### Quick Install
+### 🐧 Linux/VPS
 
+#### One-line Installation
 ```bash
+curl -O https://raw.githubusercontent.com/systemaudit/google-workspace-bulk-email/main/install.sh && chmod +x install.sh && ./install.sh
+```
+
+#### Manual Installation
+```bash
+# Clone repository
+git clone https://github.com/systemaudit/google-workspace-bulk-email.git
+cd google-workspace-bulk-email
+
+# Make installer executable
+chmod +x install.sh
+
+# Run installer
+./install.sh
+```
+
+The installer will:
+- Check and install Python if needed
+- Create virtual environment
+- Install all dependencies
+- Set up configuration files
+- Create run script
+
+### 🪟 Windows
+
+#### PowerShell Installation (Recommended)
+```powershell
+# Download installer
+curl -O https://raw.githubusercontent.com/systemaudit/google-workspace-bulk-email/main/install.ps1
+
+# Run installer (may need to allow execution)
+powershell -ExecutionPolicy Bypass -File install.ps1
+```
+
+#### Batch File Installation
+```cmd
+# Download and run install.bat
+# Double-click install.bat or run from command prompt
+install.bat
+```
+
+#### Manual Installation
+```cmd
 # Clone repository
 git clone https://github.com/systemaudit/google-workspace-bulk-email.git
 cd google-workspace-bulk-email
 
 # Install dependencies
 pip install -r requirements.txt
+
+# Run application
+python bot.py
 ```
 
-### Manual Installation
+### 🐳 Docker
 
+#### Using Docker Compose
 ```bash
 # Clone repository
 git clone https://github.com/systemaudit/google-workspace-bulk-email.git
 cd google-workspace-bulk-email
 
-# Install dependencies
-pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client requests
+# Build and run
+docker-compose up --build
+```
+
+#### Using Docker directly
+```bash
+# Build image
+docker build -t gsuite-email-generator .
+
+# Run container
+docker run -it \
+  -v $(pwd)/domain.txt:/app/domain.txt \
+  -v $(pwd)/password.txt:/app/password.txt \
+  -v $(pwd)/nama.txt:/app/nama.txt \
+  -v $(pwd)/credentials.json:/app/credentials.json \
+  -v $(pwd)/token.json:/app/token.json \
+  -v $(pwd)/output:/app/output \
+  gsuite-email-generator
 ```
 
 ## ⚙️ Configuration
@@ -74,11 +138,30 @@ The application uses the following configuration files:
 
 ## 📖 Usage
 
-### First Run
+### Quick Start
 
+After installation, run the application:
+
+#### Linux/VPS
 ```bash
-python bot.py
+./run.sh
 ```
+
+#### Windows
+```cmd
+run.bat
+```
+or
+```powershell
+.\run.ps1
+```
+
+#### Docker
+```bash
+docker-compose run gsuite-email-generator
+```
+
+### First Run
 
 The application will:
 1. Detect your environment (VPS/Local)
@@ -88,10 +171,7 @@ The application will:
 
 ### Subsequent Runs
 
-```bash
-python bot.py
-# Enter number of accounts to create when prompted
-```
+Simply run the application and enter the number of accounts to create when prompted.
 
 ## 📁 Project Structure
 
@@ -99,12 +179,20 @@ python bot.py
 google-workspace-bulk-email/
 ├── bot.py              # Main application
 ├── requirements.txt    # Python dependencies
-├── domain.txt         # Domain configuration
-├── password.txt       # Default password
-├── nama.txt          # Name database
-├── .gitignore        # Git ignore rules
-├── LICENSE           # MIT License
-└── README.md         # Documentation
+├── install.sh          # Linux/VPS installer
+├── install.ps1         # Windows PowerShell installer
+├── install.bat         # Windows batch installer
+├── run.sh              # Linux run script (created by installer)
+├── run.bat             # Windows run script (created by installer)
+├── run.ps1             # PowerShell run script (created by installer)
+├── docker-compose.yml  # Docker compose configuration
+├── Dockerfile          # Docker image definition
+├── domain.txt          # Domain configuration
+├── password.txt        # Default password
+├── nama.txt            # Name database
+├── .gitignore          # Git ignore rules
+├── LICENSE             # MIT License
+└── README.md           # Documentation
 ```
 
 ## 🔒 Security Considerations
@@ -117,13 +205,19 @@ google-workspace-bulk-email/
 
 ## 📊 Output Format
 
-Results are saved to `hasil.txt` (or incremented filenames) with the following format:
+Results are saved to `results_YYYYMMDD_HHMMSS.txt` with the following format:
 
 ```
+============================================================
+GOOGLE WORKSPACE BULK EMAIL CREATION RESULTS
+Generated: 2024-01-15 10:30:45
+Domain: company.com
+============================================================
+
 Email | Password | Full Name
 ------------------------------------------------------------
-john.doe@example.com | Password123! | John Doe
-jane.smith@example.com | Password123! | Jane Smith
+john.doe@company.com | Email123@ | John Doe
+jane.smith@company.com | Email123@ | Jane Smith
 ```
 
 ## 🐛 Troubleshooting
@@ -142,6 +236,25 @@ jane.smith@example.com | Password123! | Jane Smith
 **Token Expired**
 - The application will automatically refresh tokens
 - If refresh fails, re-authenticate by deleting `token.json`
+
+**Permission Denied (Linux/Mac)**
+- Make scripts executable: `chmod +x install.sh run.sh`
+
+**PowerShell Execution Policy (Windows)**
+- Run: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
+- Or use: `powershell -ExecutionPolicy Bypass -File install.ps1`
+
+### Environment-Specific Issues
+
+**VPS/Headless Server**
+- The application automatically detects VPS environment
+- Uses manual OAuth2 flow (copy-paste URLs)
+- No browser required on server
+
+**Docker Issues**
+- Ensure configuration files exist before running
+- Mount volumes correctly for persistent data
+- Check file permissions
 
 ## 🤝 Contributing
 
