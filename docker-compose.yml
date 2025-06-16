@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  gsuite-email-generator:
+    build: .
+    container_name: gsuite-email-generator
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      # Mount configuration files
+      - ./domain.txt:/app/domain.txt
+      - ./password.txt:/app/password.txt
+      - ./nama.txt:/app/nama.txt
+      - ./credentials.json:/app/credentials.json
+      - ./token.json:/app/token.json
+      # Mount output directory
+      - ./output:/app/output
+    stdin_open: true
+    tty: true
+    command: python bot.py
