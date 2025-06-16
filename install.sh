@@ -28,6 +28,25 @@ else
     exit 1
 fi
 
+# Check if we're in the project directory or need to clone
+if [ ! -f "bot.py" ]; then
+    echo -e "${YELLOW}Project files not found in current directory${NC}"
+    echo -e "${YELLOW}Cloning repository...${NC}"
+    
+    # Clone repository
+    git clone https://github.com/systemaudit/google-workspace-bulk-email.git
+    cd google-workspace-bulk-email
+    
+    echo -e "${GREEN}✓ Repository cloned successfully${NC}"
+fi
+
+# Check if requirements.txt exists
+if [ ! -f "requirements.txt" ]; then
+    echo -e "${RED}✗ requirements.txt not found!${NC}"
+    echo "Please ensure you're in the correct directory"
+    exit 1
+fi
+
 # Check Python
 echo -e "\n${YELLOW}Checking Python installation...${NC}"
 if command -v python3 &> /dev/null; then

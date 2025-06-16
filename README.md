@@ -29,7 +29,7 @@ Automated bulk email account creation tool for Google Workspace (formerly G Suit
 
 #### One-line Installation
 ```bash
-curl -O https://raw.githubusercontent.com/systemaudit/google-workspace-bulk-email/main/install.sh && chmod +x install.sh && ./install.sh
+git clone https://github.com/systemaudit/google-workspace-bulk-email.git && cd google-workspace-bulk-email && chmod +x install.sh && ./install.sh
 ```
 
 #### Manual Installation
